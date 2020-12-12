@@ -1,0 +1,10 @@
+Note: Formatting this file manually is not recommended.
+
+Mail birthday card	Buy a 30th birthday card for John	01-01-2021
+Doctor's Appointment	See Doctor R.K. Sharma at Bai ka Bagh, bring paperwork	19-12-2020
+Finish design proposal for client	Promised to my friend to send a email site mockup upto 22nd Feb	22-02-2021
+Servicing of the car	Plymoth RoadRunner requires servicing from last 10 days, register today	12-12-2020
+Change Rom	MPM1's custom ROM is now 2 months old, change to RR upto the end of this week	13-12-2020
+get this done	Get this project done within 30 days	11-12-2021
+error correction	Previous todo item has wrong last due date, actual due date will be provided in this todo item.	11-01-2021
+error correction	Previous todo item has wrong last due date, actual due date will be provided in this todo item.	11-01-2021
