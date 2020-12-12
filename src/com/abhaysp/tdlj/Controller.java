@@ -2,62 +2,53 @@ package com.abhaysp.tdlj;
 
 import java.util.List;
 import java.util.Observable;
-import java.util.ObservableValue;
+import java.util.Optional;
 import java.util.ArrayList;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.Month;
+
+import com.abhaysp.tdlj.datamodel.TodoData;
 import com.abhaysp.tdlj.datamodel.TodoItem;
 
+import javafx.scene.Parent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Label;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.ButtonType;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 public class Controller {
 	private List<TodoItem> todoItems;
 
+	@FXML private BorderPane mainBorderPane;
 	@FXML private ListView<TodoItem> todoListView;
 	@FXML private TextArea itemDetailsTextArea;
 	@FXML private Label deadlineLabel;
 
 	public void initialize() {
-		TodoItem item1 = new TodoItem("Mail birthday card",
-				"Buy a 30th birthday card for John",
-				LocalDate.of(2021, Month.JANUARY, 01));
-		TodoItem item2 = new TodoItem("Doctor's Appointment",
-				"See Doctor R.K. Sharma at Bai ka Bagh, bring paperwork",
-				LocalDate.of(2020, Month.DECEMBER, 19));
-		TodoItem item3 = new TodoItem("Finish design proposal for client",
-				"Promised to my friend to send a email site mockup upto 22nd Feb",
-				LocalDate.of(2021, Month.FEBRUARY, 22));
-		TodoItem item4 = new TodoItem("Servicing of the car",
-				"Plymoth RoadRunner requires servicing from last 10 days, register today",
-				LocalDate.of(2020, Month.DECEMBER, 12));
-		TodoItem item5 = new TodoItem("Change Rom",
-				"MPM1's custom ROM is now 2 months old, change to RR upto the end of this week",
-				LocalDate.of(2020, Month.DECEMBER, 13));
-
-		todoItems = new ArrayList<TodoItem>();
-		todoItems.add(item1);
-		todoItems.add(item2);
-		todoItems.add(item3);
-		todoItems.add(item4);
-		todoItems.add(item5);
-
 		todoListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TodoItem>() {
 			@Override
 			public void changed(ObservableValue<? extends TodoItem> observable, TodoItem oldValue, TodoItem newValue) {
-				if (newValue != NULL) {
+				if (newValue != null) {
 					TodoItem item = todoListView.getSelectionModel().getSelectedItem();
 					itemDetailsTextArea.setText(item.getDetails());
+					DateTimeFormatter df = DateTimeFormatter.ofPattern("MMMM d, yyyy");
+					deadlineLabel.setText(df.format(item.getDeadline()));
 				}
 			}
-		})
+		});
 
-		todoListView.getItems().setAll(todoItems);
+		/** get data from TodoListItems.txt file */
+		todoListView.getItems().setAll(TodoData.getInstance().getTodoItems());
 		/** let you select only one item
 		  (use MULTIPLE if you want to select multiple item, say with shift) */
 		todoListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -65,13 +56,43 @@ public class Controller {
 	}
 
 	@FXML
+	public void showNewItemDialog() {
+		Dialog<ButtonType> dialog = new Dialog<ButtonType>();
+		dialog.initOwner(mainBorderPane.getScene().getWindow());
+		dialog.setTitle("Add New Todo Item");
+		dialog.setHeaderText("Use this dialog to create the new todo item");
+		FXMLLoader fxmlLoader = new FXMLLoader();
+		fxmlLoader.setLocation(getClass().getResource("/com/abhaysp/tdlj/todoitemdialog.fxml"));
+		try {
+			dialog.getDialogPane().setContent(fxmlLoader.load());
+		}
+		catch (IOException ie) {
+			System.out.println("Can't open(load) the dialog");
+			ie.printStackTrace();
+			return;
+		}
+
+		dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+		dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+
+		Optional<ButtonType> result = dialog.showAndWait();
+		if (result.isPresent() && result.get() == ButtonType.OK) {
+			System.out.println("OK pressed");
+			DialogController dialogController = fxmlLoader.getController();
+			dialogController.processResults();
+			/** refresh/replace with new updated */
+			TodoItem newItem = dialogController.processResults();
+			todoListView.getItems().setAll(TodoData.getInstance().getTodoItems());
+			todoListView.getSelectionModel().select(newItem);
+		}
+		else {
+			System.out.println("CANCEL pressed");
+		}
+	}
+
+	@FXML
 	public void handleClickListView() {
 		TodoItem item = todoListView.getSelectionModel().getSelectedItem();
-		//StringBuilder sb = new StringBuilder(item.getDetails());
-		//sb.append("\n\n\n\n");
-		//sb.append("Due: ");
-		//sb.append(item.getDeadline());
-		//itemDetailsTextArea.setText(sb.toString());
 		itemDetailsTextArea.setText(item.getDetails());
 		deadlineLabel.setText(item.getDeadline().toString());
 	}
