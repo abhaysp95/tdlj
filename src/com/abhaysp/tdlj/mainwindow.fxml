@@ -1,0 +1,34 @@
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:controller="com.abhaysp.tdlj.Controller" xmlns:fx="http://javafx.com/fxml">
+	<left>
+		<ListView fx:id="todoListView" onMouseClicked="#handleClickListView">
+
+		</ListView>
+	</left>
+	<center>
+		<VBox style="-fx-background-color: white">
+			<!-- VBox will give prefHeight to its other children and all the rest of the space to TextArea -->
+			<TextArea fx:id="itemDetailsTextArea" VBox.vgrow="ALWAYS"/>
+			<HBox>
+				<Label text="Due: " style="-fx-background-color: white">
+					<font>
+						<Font name="Source Code Pro" size="20"/>
+					</font>
+				</Label>
+				<Label fx:id="deadlineLabel" style="-fx-background-color: white">
+					<font>
+						<Font name="Source Code Pro" size="20"/>
+					</font>
+				</Label>
+			</HBox>
+		</VBox>
+	</center>
+</BorderPane>
