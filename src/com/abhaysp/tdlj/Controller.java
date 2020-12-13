@@ -48,7 +48,7 @@ public class Controller {
 		});
 
 		/** get data from TodoListItems.txt file */
-		todoListView.getItems().setAll(TodoData.getInstance().getTodoItems());
+		todoListView.setItems(TodoData.getInstance().getTodoItems());
 		/** let you select only one item
 		  (use MULTIPLE if you want to select multiple item, say with shift) */
 		todoListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -79,14 +79,9 @@ public class Controller {
 		if (result.isPresent() && result.get() == ButtonType.OK) {
 			System.out.println("OK pressed");
 			DialogController dialogController = fxmlLoader.getController();
-			dialogController.processResults();
 			/** refresh/replace with new updated */
 			TodoItem newItem = dialogController.processResults();
-			todoListView.getItems().setAll(TodoData.getInstance().getTodoItems());
 			todoListView.getSelectionModel().select(newItem);
-		}
-		else {
-			System.out.println("CANCEL pressed");
 		}
 	}
 

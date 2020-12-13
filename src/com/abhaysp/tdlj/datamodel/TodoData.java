@@ -12,12 +12,13 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class TodoData {
 	private static TodoData instance = new TodoData();
 	private static String fileName = "TodoListItems.txt";
 
-	private List<TodoItem> todoItems;
+	private ObservableList<TodoItem> todoItems;
 	private DateTimeFormatter formatter;
 
 	private TodoData() {
@@ -28,7 +29,7 @@ public class TodoData {
 		return instance;
 	}
 
-	public List<TodoItem> getTodoItems() {
+	public ObservableList<TodoItem> getTodoItems() {
 		return todoItems;
 	}
 
@@ -53,9 +54,9 @@ public class TodoData {
 			br.readLine();
 			while ((input = br.readLine()) != null) {
 				String[] itemPieces = input.split("\t");
-				//for (String items: itemPieces) {
+				/*for (String items: itemPieces) {
 					//System.out.println("item: " + items);
-				//}
+				}*/
 				String shortDescription = itemPieces[0];
 				String details = itemPieces[1];
 				String dateString = itemPieces[2];
