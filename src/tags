@@ -39,7 +39,7 @@ itemDetailsTextArea	com/abhaysp/tdlj/Controller.java	/^	@FXML private TextArea i
 loadTodoItems	com/abhaysp/tdlj/datamodel/TodoData.java	/^	public void loadTodoItems() throws IOException {$/;"	m	class:TodoData
 main	com/abhaysp/tdlj/Main.java	/^	public static void main(String ...args) {$/;"	m	class:Main
 mainBorderPane	com/abhaysp/tdlj/Controller.java	/^	@FXML private BorderPane mainBorderPane;$/;"	f	class:Controller	file:
-processResults	com/abhaysp/tdlj/DialogController.java	/^	public void processResults() {$/;"	m	class:DialogController
+processResults	com/abhaysp/tdlj/DialogController.java	/^	public TodoItem processResults() {$/;"	m	class:DialogController
 setDeadline	com/abhaysp/tdlj/datamodel/TodoItem.java	/^	public void setDeadline(LocalDate deadline) {$/;"	m	class:TodoItem
 setDetails	com/abhaysp/tdlj/datamodel/TodoItem.java	/^	public void setDetails(String details) {$/;"	m	class:TodoItem
 setShortDescription	com/abhaysp/tdlj/datamodel/TodoItem.java	/^	public void setShortDescription(String shortDescription) {$/;"	m	class:TodoItem
