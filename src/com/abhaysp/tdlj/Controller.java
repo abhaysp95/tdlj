@@ -25,6 +25,8 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.util.Callback;
@@ -137,6 +139,16 @@ public class Controller {
 			/** refresh/replace with new updated */
 			TodoItem newItem = dialogController.processResults();
 			todoListView.getSelectionModel().select(newItem);
+		}
+	}
+
+	@FXML
+	public void handleKeyPressed(KeyEvent event) {
+		TodoItem selectedItem = todoListView.getSelectionModel().getSelectedItem();
+		if (selectedItem != null) {
+			if (event.getCode().equals(KeyCode.DELETE)) {
+				deleteItem(selectedItem);
+			}
 		}
 	}
 
