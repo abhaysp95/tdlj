@@ -19,9 +19,12 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Label;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ButtonType;
+import javafx.scene.paint.Color;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.util.Callback;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -53,6 +56,34 @@ public class Controller {
 		  (use MULTIPLE if you want to select multiple item, say with shift) */
 		todoListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		todoListView.getSelectionModel().selectFirst();
+
+		todoListView.setCellFactory(new Callback<ListView<TodoItem>, ListCell<TodoItem>>() {
+			@Override
+			public ListCell<TodoItem> call(ListView<TodoItem> param) {
+				ListCell<TodoItem> cell = new ListCell<TodoItem>() {
+					@Override
+					protected void updateItem(TodoItem item, boolean empty) {
+						/** default environment provided by the parent class */
+						super.updateItem(item, empty);
+						if (empty) {
+							setText(null);
+						}
+						else {
+							/** no need for toString() updateItem() is handling it */
+							setText(item.getShortDescription());
+							/** current date and dates before today */
+							if (item.getDeadline().isBefore(LocalDate.now().plusDays(1))) {
+								setTextFill(Color.RED);
+							}
+							else if (item.getDeadline().equals(LocalDate.now().plusDays(1))) {
+								setTextFill(Color.BROWN);
+							}
+						}
+					}
+				};
+				return cell;
+			}
+		});
 	}
 
 	@FXML
@@ -77,7 +108,6 @@ public class Controller {
 
 		Optional<ButtonType> result = dialog.showAndWait();
 		if (result.isPresent() && result.get() == ButtonType.OK) {
-			System.out.println("OK pressed");
 			DialogController dialogController = fxmlLoader.getController();
 			/** refresh/replace with new updated */
 			TodoItem newItem = dialogController.processResults();
