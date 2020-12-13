@@ -29,7 +29,7 @@
 	<center>
 		<VBox style="-fx-background-color: white">
 			<!-- VBox will give prefHeight to its other children and all the rest of the space to TextArea -->
-			<TextArea fx:id="itemDetailsTextArea" VBox.vgrow="ALWAYS"/>
+			<TextArea fx:id="itemDetailsTextArea" VBox.vgrow="ALWAYS" WrapText="true"/>
 			<HBox>
 				<Label text="Due: " style="-fx-background-color: white">
 					<font>
