@@ -30,7 +30,7 @@ getDeadline	com/abhaysp/tdlj/datamodel/TodoItem.java	/^	public LocalDate getDead
 getDetails	com/abhaysp/tdlj/datamodel/TodoItem.java	/^	public String getDetails() { return this.details; }$/;"	m	class:TodoItem
 getInstance	com/abhaysp/tdlj/datamodel/TodoData.java	/^	public static TodoData getInstance() {$/;"	m	class:TodoData
 getShortDescription	com/abhaysp/tdlj/datamodel/TodoItem.java	/^	public String getShortDescription() { return this.shortDescription; }$/;"	m	class:TodoItem
-getTodoItems	com/abhaysp/tdlj/datamodel/TodoData.java	/^	public List<TodoItem> getTodoItems() {$/;"	m	class:TodoData
+getTodoItems	com/abhaysp/tdlj/datamodel/TodoData.java	/^	public ObservableList<TodoItem> getTodoItems() {$/;"	m	class:TodoData
 handleClickListView	com/abhaysp/tdlj/Controller.java	/^	public void handleClickListView() {$/;"	m	class:Controller
 init	com/abhaysp/tdlj/Main.java	/^	public void init() throws Exception {$/;"	m	class:Main
 initialize	com/abhaysp/tdlj/Controller.java	/^	public void initialize() {$/;"	m	class:Controller
@@ -51,5 +51,5 @@ stop	com/abhaysp/tdlj/Main.java	/^	public void stop() throws Exception {$/;"	m	c
 storeTodoItems	com/abhaysp/tdlj/datamodel/TodoData.java	/^	public void storeTodoItems() throws IOException {$/;"	m	class:TodoData
 toString	com/abhaysp/tdlj/datamodel/TodoItem.java	/^	public String toString() {$/;"	m	class:TodoItem
 todoItems	com/abhaysp/tdlj/Controller.java	/^	private List<TodoItem> todoItems;$/;"	f	class:Controller	file:
-todoItems	com/abhaysp/tdlj/datamodel/TodoData.java	/^	private List<TodoItem> todoItems;$/;"	f	class:TodoData	file:
+todoItems	com/abhaysp/tdlj/datamodel/TodoData.java	/^	private ObservableList<TodoItem> todoItems;$/;"	f	class:TodoData	file:
 todoListView	com/abhaysp/tdlj/Controller.java	/^	@FXML private ListView<TodoItem> todoListView;$/;"	f	class:Controller	file:
