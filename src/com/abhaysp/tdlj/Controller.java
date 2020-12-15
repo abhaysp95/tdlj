@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Optional;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.function.Predicate;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -12,6 +14,7 @@ import java.time.Month;
 import com.abhaysp.tdlj.datamodel.TodoData;
 import com.abhaysp.tdlj.datamodel.TodoItem;
 
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.control.ListView;
@@ -21,6 +24,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Alert;
@@ -32,6 +36,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.util.Callback;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
+import javafx.collections.transformation.SortedList;
+import javafx.collections.transformation.FilteredList;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -44,6 +50,11 @@ public class Controller {
 	@FXML private TextArea itemDetailsTextArea;
 	@FXML private Label deadlineLabel;
 	@FXML private ContextMenu listContextMenu;
+	@FXML private ToggleButton filterToggleButton;
+	@FXML private FilteredList<TodoItem> filteredList;
+
+	private Predicate<TodoItem> wantAllItems;
+	private Predicate<TodoItem> wantTodaysItems;
 
 	public void initialize() {
 		listContextMenu = new ContextMenu();
@@ -69,8 +80,36 @@ public class Controller {
 			}
 		});
 
-		/** get data from TodoListItems.txt file */
-		todoListView.setItems(TodoData.getInstance().getTodoItems());
+		/** get the filteredList test Predicate with all items
+		  (actually, it doesn't filter anything) */
+		wantAllItems = new Predicate<TodoItem>() {
+			@Override
+			public boolean test(TodoItem todoItem) {
+				return true;
+			}
+		};
+		/** filteredList test Predicate with TodoItem of today's deadline only  */
+		wantTodaysItems = new Predicate<TodoItem>() {
+			@Override
+			public boolean test(TodoItem todoItem) {
+				return todoItem.getDeadline().equals(LocalDate.now());
+			}
+		};
+
+		filteredList = new FilteredList<TodoItem>(TodoData.getInstance().getTodoItems(), wantAllItems);
+
+		/** make todoitem sorted according to deadline with closest deadline on top */
+		SortedList<TodoItem> sortedList = new SortedList<TodoItem>(filteredList,
+				new Comparator<TodoItem>() {
+					@Override
+					public int compare(TodoItem o1, TodoItem o2) {
+						/** cause LocalDate compares just exactly like the Comparator wants with -1, 0, 1 */
+						return o1.getDeadline().compareTo(o2.getDeadline());
+					}
+				});
+
+		/** fill up todoListView with sortedList(sorted acc to deadline) */
+		todoListView.setItems(sortedList);
 		/** let you select only one item
 		  (use MULTIPLE if you want to select multiple item, say with shift) */
 		todoListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -170,5 +209,32 @@ public class Controller {
 		if (result.isPresent() && result.get() == ButtonType.OK) {
 			TodoData.getInstance().deleteTodoItem(item);
 		}
+	}
+
+	@FXML
+	public void handleFilterButton() {
+		TodoItem selectedItem = todoListView.getSelectionModel().getSelectedItem();
+		if (filterToggleButton.isSelected()) {
+			filteredList.setPredicate(wantTodaysItems);
+			if (filteredList.isEmpty()) {
+				itemDetailsTextArea.clear();
+				deadlineLabel.setText("");
+			}
+			else if (filteredList.contains(selectedItem)) {
+				todoListView.getSelectionModel().select(selectedItem);
+			}
+			else {
+				todoListView.getSelectionModel().selectFirst();
+			}
+		}
+		else {
+			filteredList.setPredicate(wantAllItems);
+			todoListView.getSelectionModel().select(selectedItem);
+		}
+	}
+
+	@FXML
+	public void handleExit() {
+		Platform.exit();
 	}
 }
