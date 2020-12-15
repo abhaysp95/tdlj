@@ -17,7 +17,12 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 
+<?import java.net.*?>
+
 <BorderPane fx:id="mainBorderPane" fx:controller="com.abhaysp.tdlj.Controller" xmlns:fx="http://javafx.com/fxml">
+	<stylesheets>
+		<URL value="@application.css" />
+	</stylesheets>
 	<top>
 		<VBox>
 			<MenuBar>
@@ -28,7 +33,7 @@
 				</Menu>
 			</MenuBar>
 			<ToolBar>
-				<HBox>
+				<HBox spacing="10">
 					<Button onAction="#showNewItemDialog">
 						<tooltip>
 							<Tooltip text="Add a New Todo Item" />
@@ -45,6 +50,7 @@
 							<Tooltip text="Button down: Show today's item only. Button up: Show all items" />
 						</tooltip>
 					</ToggleButton>
+					<Button text="This" />
 				</HBox>
 			</ToolBar>
 		</VBox>
