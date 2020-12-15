@@ -30,3 +30,8 @@ rsync -av /home/raytracer/Downloads/git-materials/my_repos/tdlj/src/com/abhaysp/
 # source: bin
 # desitnation: src
 #rsync -av "${HOME}/Downloads/git-materials/my_repos/tdlj/bin/TodoListItems.txt" "${HOME}/Downloads/git-materials/my_repos/tdlj/src"
+
+# file: application.css
+# source: src
+# desitnation: bin(module)
+rsync -av /home/raytracer/Downloads/git-materials/my_repos/tdlj/src/com/abhaysp/tdlj/application.css /home/raytracer/Downloads/git-materials/my_repos/tdlj/bin/com.abhaysp.tdlj/com/abhaysp/tdlj
